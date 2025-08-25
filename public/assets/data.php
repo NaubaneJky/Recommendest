@@ -18,16 +18,20 @@ class inputDataDestinasi {
         $deskripsi = $row['deskripsi'];
         $alamat = $row['alamat'];
         $jam_buka = $row['jam_buka'];
+        $musim = $row['musim'];
+        $maksimal_orang = $row['maksimal_orang'];
         $jarak = $row['jarak'];
         $harga_tiket = $row['harga_tiket'];
 
-        $sql = $this->conn->prepare("INSERT INTO destinasi (nama, gambar, deskripsi, alamat, jam_buka, jarak, harga_tiket) VALUES (:nama, :gambar, :deskripsi, :alamat, :jam_buka, :jarak, :harga_tiket)");
+        $sql = $this->conn->prepare("INSERT INTO destinasi (nama, gambar, deskripsi, alamat, jam_buka, musim, maksimal_orang, jarak, harga_tiket) VALUES (:nama, :gambar, :deskripsi, :alamat, :jam_buka, :musim, :maksimal_orang, :jarak, :harga_tiket)");
         if ($sql->execute([
             ':nama' => $nama,
             ':gambar' => $gambar,
             ':deskripsi' => $deskripsi,
             ':alamat' => $alamat,
             ':jam_buka' => $jam_buka,
+            ':musim' => $musim,
+            ':maksimal_orang' => $maksimal_orang,
             ':jarak' => $jarak,
             ':harga_tiket' => $harga_tiket
         ])) {

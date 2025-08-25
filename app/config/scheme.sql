@@ -14,6 +14,8 @@ CREATE TABLE `destinasi` (
 	`deskripsi` TEXT NOT NULL,
 	`alamat` VARCHAR(100) NOT NULL,
 	`jam_buka` VARCHAR(15) NOT NULL,
+	`musim` ENUM('Penghujan', 'Kemarau') NOT NULL,
+	`maksimal_orang` INTEGER NOT NULL,
 	`jarak` FLOAT(5,2) NOT NULL,
 	`harga_tiket` INTEGER NOT NULL,
 	PRIMARY KEY(`id`)
@@ -28,7 +30,6 @@ CREATE TABLE `booking` (
 	`telp` INTEGER NOT NULL,
 	`tanggal_booking` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`tanggal_berangkat` DATE NOT NULL,
-	`musim` ENUM('Penghujan', 'Kemarau') NOT NULL,
 	`jumlah_orang` INTEGER NOT NULL,
 	`note` VARCHAR(100) NULL,
 	`diskon` FLOAT(5,2) DEFAULT 0 NOT NULL,
