@@ -5,8 +5,6 @@ CREATE TABLE `user` (
 	`membership` ENUM('Silver', 'Gold', 'Non-Membership') NOT NULL DEFAULT 'Non-Membership',
 	PRIMARY KEY(`id`)
 );
-
-
 CREATE TABLE `destinasi` (
 	`id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
 	`nama` VARCHAR(75) NOT NULL,
@@ -20,8 +18,6 @@ CREATE TABLE `destinasi` (
 	`harga_tiket` INTEGER NOT NULL,
 	PRIMARY KEY(`id`)
 );
-
-
 CREATE TABLE `booking` (
 	`id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
 	`user_id` INTEGER NOT NULL UNIQUE,
@@ -37,8 +33,6 @@ CREATE TABLE `booking` (
 	`total` FLOAT(12,3) DEFAULT 0 NOT NULL,
 	PRIMARY KEY(`id`)
 );
-
-
 ALTER TABLE `booking`
 ADD FOREIGN KEY(`user_id`) REFERENCES `user`(`id`)
 ON UPDATE NO ACTION ON DELETE CASCADE;

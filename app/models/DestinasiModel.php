@@ -1,8 +1,9 @@
 <?php
 class DestinasiModel { 
-    public PDO $conn;
-    public function __construct(PDO $conn){
-        $this->conn = $conn;
+    private $conn;
+    public function __construct(){
+        $config = new config();
+        $this->conn = $config->conn;
     }
 // Function addDestinasi
     public function addDestinasi($nama,$gambar,$deskripsi,$alamat,$jam_buka,$jarak,$harga_tiket){
@@ -26,10 +27,10 @@ class DestinasiModel {
             $stmt = $this->conn->prepare("SELECT * FROM destinasi WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
-            $querry = $stmt->fetch(PDO::FETCH_ASSOC);
+            $query = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($querry){
-                return $querry;
+            if($query){
+                return $query;
             } else {
                 echo "Error: " . $stmt->errorInfo()[2];
             }
@@ -39,10 +40,10 @@ class DestinasiModel {
         public function getListDestinasi(){
             $stmt = $this->conn->prepare("SELECT id, nama, gambar, jarak, harga_tiket FROM destinasi");
             $stmt->execute();
-            $querry = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $query = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if($querry){
-                return $querry;
+            if($query){
+                return $query;
             } else {
                 echo "Error: " . $stmt->errorInfo()[2];
             }
@@ -60,10 +61,10 @@ class DestinasiModel {
             $stmt->bindParam(':jarak_user', $jarak);
             $stmt->bindParam(':maksimal_orang_user', $maksimal_orang);
             $stmt->execute();
-            $querry = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $query = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if($querry){
-                return $querry;
+            if($query){
+                return $query;
             } else {
                 echo "Error: " . $stmt->errorInfo()[2];
             }
@@ -73,10 +74,10 @@ class DestinasiModel {
             $stmt = $this->conn->prepare("SELECT maksimal_orang FROM destinasi where id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
-            $querry = $stmt->fetch(PDO::FETCH_ASSOC);
+            $query = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($querry){
-                return $querry;
+            if($query){
+                return $query;
             } else {
                 echo "Error: " . $stmt->errorInfo()[2];
             }
@@ -86,10 +87,10 @@ class DestinasiModel {
             $stmt = $this->conn->prepare("SELECT harga_tiket FROM destinasi where id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
-            $querry = $stmt->fetch(PDO::FETCH_ASSOC);
+            $query = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($querry){
-                return $querry;
+            if($query){
+                return $query;
             } else {
                 echo "Error: " . $stmt->errorInfo()[2];
             }

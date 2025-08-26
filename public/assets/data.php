@@ -1,10 +1,12 @@
 <?php
 require_once __DIR__ . '/../../app/autoload.php';
 class inputDataDestinasi { 
-    public PDO $conn;
-    public function __construct(PDO $conn){
-        $this->conn = $conn;
+    private $conn;
+    public function __construct(){
+        $config = new config();
+        $this->conn = $config->conn;
     }
+
     public function run(){
     // Ambil isi JSON (misalnya dari file)
     $jsonData = file_get_contents("data.json");
@@ -47,4 +49,8 @@ class inputDataDestinasi {
 }
 
 $obj = new inputDataDestinasi($conn);
+$UserNonMembership = new User();
+$UserSilver = new UserSilver();
+$UserGold = new UserGold();
+
 $obj->run();
