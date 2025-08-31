@@ -7,7 +7,7 @@ class BookingModel{
     }
 // Function addBooking
     public function addBooking($user_id,$destinasi_id,$email,$telp,$tanggal_berangkat,$jumlah_orang,$note,$diskon,$cashback,$total){
-        $stmt = $this->conn->prepare("INSERT INTO booking (user_id, destinasi_id, email, telp, tanggal_booking, tanggal_berangkat, musim, jumlah_orang, note, diskon, cashback, total) VALUES (:user_id, :destinasi_id, :email, :telp, :tanggal_booking, :tanggal_berangkat, :musim, :jumlah_orang, :note, :diskon, :cashback, :total)");
+        $stmt = $this->conn->prepare("INSERT INTO booking (user_id, destinasi_id, email, telp, tanggal_berangkat, jumlah_orang, note, diskon, cashback, total) VALUES (:user_id, :destinasi_id, :email, :telp, :tanggal_berangkat, :jumlah_orang, :note, :diskon, :cashback, :total)");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->bindParam(':destinasi_id', $destinasi_id);
         $stmt->bindParam(':email', $email);
@@ -18,21 +18,14 @@ class BookingModel{
         $stmt->bindParam(':diskon', $diskon);
         $stmt->bindParam(':cashback', $cashback);
         $stmt->bindParam(':total', $total);
-
-        if($stmt->execute()){
-            echo "Booking berhasil ditambahkan.";
-        } else {
-            echo "Error: " . $stmt->errorInfo()[2];
-        }
+        $stmt->execute();
     }
 
     public function deleteBooking($id){
         $stmt = $this->conn->prepare("DELETE FROM booking WHERE id = :id");
         $stmt->bindParam(':id', $id);
         if($stmt->execute()){
-            return $notif = "Booking berhasil dihapus!";
-        } else {
-            return "Error: " . $stmt->errorInfo()[2];
+            header('Location: index.php?route=riwayat-booking');
         }
     }
 
@@ -41,25 +34,23 @@ class BookingModel{
         $stmt = $this->conn->prepare("SELECT * FROM booking WHERE id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        $query = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if($query){
-            return $query;
-        } else {
-            echo "Error: " . $stmt->errorInfo()[2];
-        }
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getAllUserBookings($user_id){
-        $stmt = $this->conn->prepare("SELECT id, email, telp, tanggal_berangkat, jumlah_orang, note FROM booking WHERE user_id = :user_id");
+        $stmt = $this->conn->prepare("SELECT booking.id         AS id,
+                                            destinasi.id             AS destinasi_id,
+                                            destinasi.nama             AS destinasi,
+                                            booking.tanggal_berangkat  AS tanggal_berangkat,
+                                            booking.jumlah_orang       AS jumlah_orang,
+                                            booking.total              AS total,
+                                            booking.note               AS note
+                                            FROM booking
+                                            INNER JOIN destinasi
+                                            ON booking.destinasi_id = destinasi.id
+                                            WHERE booking.user_id = :user_id");
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
-        $query = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if($query){
-            return $query;
-        } else {
-            echo "Error: " . $stmt->errorInfo()[2];
-        }
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

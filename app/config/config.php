@@ -3,7 +3,7 @@
 class config {
     private $host       = "localhost",
             $user       = "root",
-            $password   = "",
+            $password   = "mineluxmc01",
             $database   = "recommendest";
     public  $conn;
 
@@ -17,6 +17,12 @@ class config {
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
+        }
+    }
+
+    public function __destruct() {
+        if ($this->conn) {
+            $this->conn = null;
         }
     }
 }

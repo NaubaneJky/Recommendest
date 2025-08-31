@@ -15,84 +15,59 @@ class DestinasiModel {
         $stmt->bindParam(':jam_buka', $jam_buka);
         $stmt->bindParam(':jarak', $jarak);
         $stmt->bindParam(':harga_tiket', $harga_tiket);
-
-        if($stmt->execute()){
-            echo "Destinasi berhasil ditambahkan.";
-        } else {
-            echo "Error: " . $stmt->errorInfo()[2];
-        }
+        $stmt->execute();
     }
 // Funtion getDestinasi
-        public function getDestinasiById($id){
-            $stmt = $this->conn->prepare("SELECT * FROM destinasi WHERE id = :id");
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            $query = $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getDestinasiById($id){
+        $stmt = $this->conn->prepare("SELECT * FROM destinasi WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-            if($query){
-                return $query;
-            } else {
-                echo "Error: " . $stmt->errorInfo()[2];
-            }
+    // Funtion getAllDestinasi
+    public function getListDestinasi(){
+        $stmt = $this->conn->prepare("SELECT id, nama, gambar, jarak, harga_tiket FROM destinasi");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getRekomendasiDestinasi( $musim, $jarak, $maksimal_orang){
+        $stmt = $this->conn->prepare
+        ("SELECT id, nama, gambar, jarak, harga_tiket FROM destinasi 
+            WHERE musim = :musim
+            AND jarak <= :jarak_user
+            AND maksimal_orang <= :maksimal_orang_user");
+        // $stmt->bindParam(':budget_user', $budget);
+        $stmt->bindParam(':musim', $musim);
+        $stmt->bindParam(':jarak_user', $jarak);
+        $stmt->bindParam(':maksimal_orang_user', $maksimal_orang);
+        $stmt->execute();
+        $recommendations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (empty($recommendations)) {
+            return $recommendations = [];
         }
+        return $recommendations;
+    }
 
-        // Funtion getAllDestinasi
-        public function getListDestinasi(){
-            $stmt = $this->conn->prepare("SELECT id, nama, gambar, jarak, harga_tiket FROM destinasi");
-            $stmt->execute();
-            $query = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function getMaksimalOrangById($id){
+        $stmt = $this->conn->prepare("SELECT maksimal_orang FROM destinasi where id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-            if($query){
-                return $query;
-            } else {
-                echo "Error: " . $stmt->errorInfo()[2];
-            }
-        }
+    public function getHargaTiketById($id): int{
+        $stmt = $this->conn->prepare("SELECT harga_tiket FROM destinasi where id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
 
-        public function getRekomendasiDestinasi($budget, $musim, $jarak, $maksimal_orang){
-            $stmt = $this->conn->prepare
-            ("SELECT id, nama, gambar, jarak, harga_tiket FROM destinasi 
-              WHERE budget_minimal <= :budget_user
-              AND musim = :musim
-              AND jarak <= :jarak_user
-              AND maksimal_orang <= :maksimal_orang_user");
-            $stmt->bindParam(':budget_user', $budget);
-            $stmt->bindParam(':musim', $musim);
-            $stmt->bindParam(':jarak_user', $jarak);
-            $stmt->bindParam(':maksimal_orang_user', $maksimal_orang);
-            $stmt->execute();
-            $query = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if($query){
-                return $query;
-            } else {
-                echo "Error: " . $stmt->errorInfo()[2];
-            }
-        }
-
-        public function getMaksimalOrangById($id){
-            $stmt = $this->conn->prepare("SELECT maksimal_orang FROM destinasi where id = :id");
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            $query = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if($query){
-                return $query;
-            } else {
-                echo "Error: " . $stmt->errorInfo()[2];
-            }
-        }
-
-        public function getHargaTiketById($id){
-            $stmt = $this->conn->prepare("SELECT harga_tiket FROM destinasi where id = :id");
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            $query = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if($query){
-                return $query;
-            } else {
-                echo "Error: " . $stmt->errorInfo()[2];
-            }
-        }
+    public function getNamaById($id): string{
+        $stmt = $this->conn->prepare("SELECT nama FROM destinasi where id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return (string) $stmt->fetchColumn();
+    }
 }
