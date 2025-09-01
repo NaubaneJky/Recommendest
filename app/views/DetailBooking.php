@@ -84,19 +84,8 @@ include 'include/Navbar.php';
             </div>
 
             <div class="bg-gray-50 p-6 rounded-lg mb-8">
-                <h2 class="text-xl font-semibold text-dark mb-4">Detail Pembayaran</h2>
                 <div class="space-y-2">
                     <div class="flex justify-between">
-                        <span>Subtotal</span>
-                        <span>Rp <?= number_format($booking['total'] + ($booking['total'] * $booking['diskon'] / 100) + $booking['cashback'], 0, ',', '.'); ?></span>
-                    </div>
-                    <div class="flex justify-between text-accent">
-                        <span>Diskon (<?= $booking['diskon']; ?>%)</span>
-                        <span>-Rp <?= number_format($booking['total'] * $booking['diskon'] / 100, 0, ',', '.'); ?></span>
-                    </div>
-                    <div class="flex justify-between text-accent">
-                        <span>Cashback</span>
-                        <span>-Rp <?= number_format($booking['cashback'], 0, ',', '.'); ?></span>
                     </div>
                     <hr class="my-2">
                     <div class="flex justify-between text-lg font-bold text-dark">
@@ -107,12 +96,14 @@ include 'include/Navbar.php';
             </div>
 
             <div class="mt-6">
-                <div class="flex gap-4">
-                    <button onclick="cancelBooking(<?= $booking['id']; ?>)" 
-                            class="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-600 transition-colors">
-                        Batalkan Booking
-                    </button>
-                </div>
+                <form class="flex gap-4" method="POST" action="index.php?route=riwayat-booking" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan booking ini?');">
+                <input type="hidden" name="action" value="delete_booking">
+                <input type="hidden" name="id" value="<?= $booking['id']; ?>">
+                <button type="submit" 
+                class="flex-1 bg-red-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-600 transition-colors">
+                Batalkan Booking
+                </button>
+                </form>
             </div>
         </div>
     </div>
